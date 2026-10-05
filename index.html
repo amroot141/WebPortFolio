@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Full-Stack Developer Portfolio | OS Bento Resume</title>
-  <meta name="description" content="Futuristic OS window & bento-card portfolio for a Full-Stack Developer & System Architect.">
-  
+  <meta name="description"
+    content="Futuristic OS window & bento-card portfolio for a Full-Stack Developer & System Architect.">
+
   <!-- Google Fonts: Space Grotesk & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+
   <!-- Firebase Web SDK (Modular CDN) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -23,19 +27,21 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="os-background-glow"></div>
 
   <!-- Main OS Window Wrapper (Clean Client View) -->
   <main class="os-wrapper">
     <div class="os-window-frame" id="osWindow">
-      
+
       <!-- Top OS Window Bar -->
       <header class="os-titlebar">
         <div class="os-title-left">
           <!-- Secret trigger: Triple click this indicator dot to trigger admin login -->
           <span class="os-indicator-dot" id="secretAdminTrigger" title="System Status: Triple-click for Admin"></span>
-          <span class="os-title-text" id="viewTitleText">RESUME <span class="divider">|</span> <span id="viewYearText">2026</span></span>
+          <span class="os-title-text" id="viewTitleText">RESUME <span class="divider">|</span> <span
+              id="viewYearText">2026</span></span>
         </div>
         <div class="os-title-actions">
           <div class="os-controls-pill" aria-label="Window Controls">
@@ -48,7 +54,7 @@
 
       <!-- Bento Grid Inner Canvas -->
       <div class="bento-canvas">
-        
+
         <!-- SECTION 1: HERO BENTO CARD (TOP) -->
         <section class="bento-card hero-card" id="heroCard">
           <!-- Left Column: High-Contrast Grayscale Portrait -->
@@ -66,13 +72,14 @@
 
           <!-- Right Column: Info, Header & Bio -->
           <div class="hero-info-column">
-            
+
             <!-- Top Row: Role Badge & Search Pill -->
             <div class="hero-top-row">
               <div class="role-pill">
                 <span class="role-text" id="viewRole">FULL-STACK DEVELOPER</span>
               </div>
-              <button class="search-pill-btn" id="searchBtn" title="Search profile & stack (Ctrl+K)" aria-label="Search">
+              <button class="search-pill-btn" id="searchBtn" title="Search profile & stack (Ctrl+K)"
+                aria-label="Search">
                 <i data-lucide="search"></i>
               </button>
             </div>
@@ -80,11 +87,13 @@
             <!-- Middle Row: Name & Bio -->
             <div class="hero-middle-row">
               <h1 class="hero-name" id="heroName">
-                <span class="name-text" id="viewName">MANOJ KUMAR R</span>
+                <span class="name-text" id="viewName">AMRITANSHU</span>
                 <span class="name-cursor">_</span>
               </h1>
               <p class="hero-bio" id="viewBio">
-                Passionate Full-Stack Developer & System Architect with expertise in building high-performance web applications, automated workflows, and robust database architectures. Skilled in solving complex technical challenges and optimizing end-to-end digital systems.
+                Passionate Full-Stack Developer & System Architect with expertise in building high-performance web
+                applications, automated workflows, and robust database architectures. Skilled in solving complex
+                technical challenges and optimizing end-to-end digital systems.
               </p>
             </div>
 
@@ -94,7 +103,7 @@
                 <div class="pill-icon-box">
                   <i data-lucide="globe"></i>
                 </div>
-                <span class="email-text" id="viewEmail">manojkumarrbca@srmasc.ac.in</span>
+                <span class="email-text" id="viewEmail">a2bitky@gmail.com</span>
                 <span class="pill-action-icon">
                   <i data-lucide="copy" class="copy-icon"></i>
                   <i data-lucide="check" class="check-icon"></i>
@@ -111,10 +120,10 @@
 
         <!-- SECTION 2: MAIN CONTENT BENTO CARD (BOTTOM) -->
         <section class="bento-card main-content-card" id="mainContentCard">
-          
+
           <!-- Top 2-Column Split: Education/Highlights & Technical Skills -->
           <div class="main-two-col-grid">
-            
+
             <!-- Left Column: Experience & Education Timeline -->
             <div class="content-col experience-col">
               <div class="section-title-wrapper">
@@ -159,10 +168,11 @@
                 <span></span><span></span><span></span>
               </div>
             </div>
-            
+
             <div class="work-summary-box">
               <p class="work-summary-text" id="viewWorkSummary">
-                Specialize in building custom web platforms, process automation engines, and system integrations for clients and businesses to optimize workflow efficiency.
+                Specialize in building custom web platforms, process automation engines, and system integrations for
+                clients and businesses to optimize workflow efficiency.
               </p>
               <div class="status-indicator">
                 <span class="status-dot"></span>
@@ -231,7 +241,7 @@
       </div>
       <form id="authForm" class="auth-form">
         <div class="auth-input-group">
-          <input type="password" id="authPinInput" placeholder="Enter PIN (Default: 2026)" autocomplete="off" autofocus>
+          <input type="password" id="authPinInput" placeholder="Enter PIN" autocomplete="off" autofocus>
           <button type="submit" class="auth-submit-btn" id="authSubmitBtn">
             <i data-lucide="arrow-right"></i>
           </button>
@@ -249,7 +259,7 @@
        ========================================================================= -->
   <dialog class="admin-dashboard-modal" id="adminModal">
     <div class="admin-panel-container">
-      
+
       <!-- Dashboard Header -->
       <div class="admin-header">
         <div class="admin-header-title">
@@ -322,7 +332,7 @@
 
       <!-- Dashboard Tab Panels Container -->
       <div class="admin-tab-content-wrap">
-        
+
         <!-- TAB 1: Profile & Bio -->
         <div class="tab-pane active" id="tab-profile">
           <div class="form-grid-2">
@@ -349,7 +359,8 @@
 
           <div class="form-group">
             <label for="inputBio">Biography Summary</label>
-            <textarea id="inputBio" rows="4" placeholder="Enter your full professional summary and developer bio..."></textarea>
+            <textarea id="inputBio" rows="4"
+              placeholder="Enter your full professional summary and developer bio..."></textarea>
           </div>
 
           <div class="form-group">
@@ -440,11 +451,13 @@
         <div class="tab-pane" id="tab-work">
           <div class="form-group">
             <label for="inputWorkSummary">Work & Automation Summary</label>
-            <textarea id="inputWorkSummary" rows="4" placeholder="Describe your freelance and automation capabilities..."></textarea>
+            <textarea id="inputWorkSummary" rows="4"
+              placeholder="Describe your freelance and automation capabilities..."></textarea>
           </div>
           <div class="form-group">
             <label for="inputAvailability">Availability / Status Text</label>
-            <input type="text" id="inputAvailability" placeholder="e.g. Available for New Projects & Architectural Consultations">
+            <input type="text" id="inputAvailability"
+              placeholder="e.g. Available for New Projects & Architectural Consultations">
           </div>
         </div>
 
@@ -504,7 +517,8 @@
                 <i data-lucide="database" class="cloud-icon"></i>
                 <div>
                   <h4 id="cloudConnectionTitle">Firebase Cloud Sync: Offline / Local Mode</h4>
-                  <p id="cloudConnectionSubtitle">Connect your free Firebase Firestore database to enable real-time 1-second global updates.</p>
+                  <p id="cloudConnectionSubtitle">Connect your free Firebase Firestore database to enable real-time
+                    1-second global updates.</p>
                 </div>
               </div>
               <button type="button" class="btn-secondary" id="testCloudConnectionBtn">
@@ -524,15 +538,19 @@
   "messagingSenderId": "...",
   "appId": "..."
 }'></textarea>
-              <span class="field-hint">Your config is safely stored and connects directly from client to Firestore over SSL.</span>
+              <span class="field-hint">Your config is safely stored and connects directly from client to Firestore over
+                SSL.</span>
             </div>
 
             <div class="firebase-quick-guide">
               <h5>⚡ How to get your free Firebase Config in 60 seconds:</h5>
               <ol>
-                <li>Go to <a href="https://console.firebase.google.com" target="_blank" rel="noopener">console.firebase.google.com</a> & click <strong>Create a project</strong>.</li>
-                <li>Go to <strong>Build &gt; Firestore Database &gt; Create Database</strong> (Start in <em>Test Mode</em> for read/write access).</li>
-                <li>Go to <strong>Project Settings (Gear icon) &gt; General &gt; Your Apps &gt; Add Web App (<code>&lt;/&gt;</code>)</strong>.</li>
+                <li>Go to <a href="https://console.firebase.google.com" target="_blank"
+                    rel="noopener">console.firebase.google.com</a> & click <strong>Create a project</strong>.</li>
+                <li>Go to <strong>Build &gt; Firestore Database &gt; Create Database</strong> (Start in <em>Test
+                    Mode</em> for read/write access).</li>
+                <li>Go to <strong>Project Settings (Gear icon) &gt; General &gt; Your Apps &gt; Add Web App
+                    (<code>&lt;/&gt;</code>)</strong>.</li>
                 <li>Copy the <code>firebaseConfig</code> object and paste it above!</li>
               </ol>
             </div>
@@ -544,14 +562,19 @@
           <div class="form-group">
             <label for="inputNewPin">Change Admin Access PIN</label>
             <input type="password" id="inputNewPin" placeholder="Enter new numeric or text PIN">
-            <span class="field-hint">This PIN is required whenever accessing this dashboard. (Default: <code>2026</code>)</span>
+            <span class="field-hint">This PIN is required whenever accessing this dashboard. (Default:
+              <code>2026</code>)</span>
           </div>
           <div class="secret-triggers-info">
             <h5>How to Access Dashboard on any Deployed URL:</h5>
             <ul>
-              <li><strong>Secret Keyboard Shortcut:</strong> Press <code>Ctrl + Shift + A</code> (or <code>Cmd + Shift + A</code>)</li>
-              <li><strong>Hidden Indicator Dot:</strong> Triple-click the top-left white glowing indicator dot in the titlebar</li>
-              <li><strong>Secret URL parameter:</strong> Add <code>?admin=1</code> or <code>#admin</code> to the URL</li>
+              <li><strong>Secret Keyboard Shortcut:</strong> Press <code>Ctrl + Shift + A</code> (or
+                <code>Cmd + Shift + A</code>)
+              </li>
+              <li><strong>Hidden Indicator Dot:</strong> Triple-click the top-left white glowing indicator dot in the
+                titlebar</li>
+              <li><strong>Secret URL parameter:</strong> Add <code>?admin=1</code> or <code>#admin</code> to the URL
+              </li>
             </ul>
           </div>
         </div>
@@ -560,7 +583,8 @@
 
       <!-- Dashboard Footer -->
       <div class="admin-footer">
-        <span class="auto-save-hint"><i data-lucide="shield-check"></i> Changes are protected and synced in real-time.</span>
+        <span class="auto-save-hint"><i data-lucide="shield-check"></i> Changes are protected and synced in
+          real-time.</span>
         <div class="admin-footer-buttons">
           <button class="btn-secondary" id="cancelAdminBtn">Exit Admin</button>
           <button class="btn-primary" id="saveAndCloseBtn">Save & Sync Globally</button>
@@ -600,4 +624,5 @@
     lucide.createIcons();
   </script>
 </body>
+
 </html>

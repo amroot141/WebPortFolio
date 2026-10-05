@@ -384,15 +384,26 @@ function renderPortfolio(data) {
     `).join('');
   }
 
-  // Socials
+  // Socials — use a reliable icon lookup since saved data may have corrupted icon names
+  const SOCIAL_ICON_MAP = {
+    'github': 'github', 'linkedin': 'linkedin', 'twitter': 'twitter',
+    'instagram': 'instagram', 'youtube': 'youtube', 'facebook': 'facebook',
+    'dribbble': 'dribbble', 'twitch': 'twitch', 'discord': 'message-circle',
+    'tiktok': 'music', 'reddit': 'message-square', 'pinterest': 'pin',
+    'whatsapp': 'phone', 'telegram': 'send', 'snapchat': 'ghost'
+  };
   const socialsWrap = document.getElementById('socialsWrap');
   if (socialsWrap) {
     const activeSocials = (data.socials || []).filter(s => s.enabled && s.url);
-    socialsWrap.innerHTML = activeSocials.map(s => `
-      <a href="${escapeHtml(s.url)}" target="_blank" class="social-icon-pill" title="${escapeHtml(s.platform)}">
-        <i data-lucide="${escapeHtml(s.icon)}"></i>
-      </a>
-    `).join('');
+    socialsWrap.innerHTML = activeSocials.map(s => {
+      const platformKey = (s.platform || '').toLowerCase().trim();
+      const safeIcon = SOCIAL_ICON_MAP[platformKey] || s.icon || 'link';
+      return `
+        <a href="${escapeHtml(s.url)}" target="_blank" class="social-icon-pill" title="${escapeHtml(s.platform)}">
+          <i data-lucide="${escapeHtml(safeIcon)}"></i>
+        </a>
+      `;
+    }).join('');
   }
 
   // Custom Sections
