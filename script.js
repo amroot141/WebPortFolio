@@ -162,12 +162,24 @@ function setSecurityPin(newPin) {
 
 function getStoredFirebaseConfig() {
   const raw = localStorage.getItem(FIREBASE_CONFIG_KEY);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw);
-  } catch (e) {
-    return null;
+  if (raw) {
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      console.error(e);
+    }
   }
+  
+  // Return hardcoded config for public visitors (Safe because writes are protected by Rules)
+  return {
+    apiKey: "AIzaSyCLIK7SpqzTdNP-9X9zSAOG4OavxWE8q1E",
+    authDomain: "my-portfolio-bf33a.firebaseapp.com",
+    projectId: "my-portfolio-bf33a",
+    storageBucket: "my-portfolio-bf33a.firebasestorage.app",
+    messagingSenderId: "859331816205",
+    appId: "1:859331816205:web:4d8450bfbbb162d92b9e44",
+    measurementId: "G-8YTEY77ERE"
+  };
 }
 
 function setStoredFirebaseConfig(configObj) {
