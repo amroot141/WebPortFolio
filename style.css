@@ -398,6 +398,9 @@ body {
 /* Bottom Row: Wide Contact Email Pill */
 .hero-bottom-row {
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .contact-email-pill {
@@ -498,7 +501,6 @@ body {
 .hero-socials-wrap {
   display: flex;
   gap: 0.75rem;
-  margin-top: 1rem;
   flex-wrap: wrap;
 }
 

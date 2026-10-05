@@ -144,6 +144,14 @@ function loadLocalData() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       currentData = JSON.parse(raw);
+      // Data migration to fix broken icons
+      if (currentData.socials) {
+        currentData.socials.forEach(s => {
+          if (!s.icon || s.icon === 'link' || s.icon === 'null') {
+            s.icon = s.platform.toLowerCase().replace(/[^a-z0-9]/g, '');
+          }
+        });
+      }
     } else {
       currentData = JSON.parse(JSON.stringify(DEFAULT_DATA));
     }
@@ -1121,28 +1129,7 @@ function initStealthAdmin() {
       });
     }
 
-    // Explicitly gather Socials from DOM
-    const adminSocialsList = document.getElementById('adminSocialsList');
-    if (adminSocialsList) {
-      workingData.socials = [];
-      adminSocialsList.querySelectorAll('.item-edit-card').forEach(card => {
-        const cb = card.querySelector('.social-enable-cb');
-        const urlInp = card.querySelector('.social-url-input');
-        const label = card.querySelector('label');
-        if (label) {
-          const platform = label.textContent.trim();
-          const iconElem = label.querySelector('i');
-          const iconName = iconElem ? iconElem.getAttribute('data-lucide') : 'link';
-          workingData.socials.push({
-            id: `soc-${platform.toLowerCase().replace(/[^a-z0-9]/g, '')}`,
-            platform: platform,
-            url: urlInp ? urlInp.value.trim() : '',
-            enabled: cb ? cb.checked : false,
-            icon: iconName
-          });
-        }
-      });
-    }
+    // Socials are updated via event listeners, so no need to scrape from DOM.
 
     // Explicitly gather Custom Sections from DOM
     const adminCustomSectionsList = document.getElementById('adminCustomSectionsList');
