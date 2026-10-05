@@ -88,7 +88,18 @@ const DEFAULT_DATA = {
     { id: 'comp-3', title: 'System Architecture', icon: 'layers' },
     { id: 'comp-4', title: 'Team Leadership', icon: 'users' },
     { id: 'comp-5', title: 'Adaptability', icon: 'zap' }
-  ]
+  ],
+  socials: [
+    { id: 'soc-github', platform: 'GitHub', url: '', enabled: false, icon: 'github' },
+    { id: 'soc-linkedin', platform: 'LinkedIn', url: '', enabled: false, icon: 'linkedin' },
+    { id: 'soc-twitter', platform: 'Twitter', url: '', enabled: false, icon: 'twitter' },
+    { id: 'soc-instagram', platform: 'Instagram', url: '', enabled: false, icon: 'instagram' },
+    { id: 'soc-youtube', platform: 'YouTube', url: '', enabled: false, icon: 'youtube' },
+    { id: 'soc-facebook', platform: 'Facebook', url: '', enabled: false, icon: 'facebook' },
+    { id: 'soc-dribbble', platform: 'Dribbble', url: '', enabled: false, icon: 'dribbble' },
+    { id: 'soc-twitch', platform: 'Twitch', url: '', enabled: false, icon: 'twitch' }
+  ],
+  customSections: []
 };
 
 // SVG Default Portrait Template
@@ -365,6 +376,45 @@ function renderPortfolio(data) {
     `).join('');
   }
 
+  // Socials
+  const socialsWrap = document.getElementById('socialsWrap');
+  if (socialsWrap) {
+    const activeSocials = (data.socials || []).filter(s => s.enabled && s.url);
+    socialsWrap.innerHTML = activeSocials.map(s => `
+      <a href="${escapeHtml(s.url)}" target="_blank" class="social-icon-pill" title="${escapeHtml(s.platform)}">
+        <i data-lucide="${escapeHtml(s.icon)}"></i>
+      </a>
+    `).join('');
+  }
+
+  // Custom Sections
+  const customSectionsContainer = document.getElementById('customSectionsContainer');
+  if (customSectionsContainer) {
+    customSectionsContainer.innerHTML = (data.customSections || []).map(section => `
+      <div class="content-row">
+        <div class="section-title-wrapper">
+          <h2 class="section-title">${escapeHtml(section.title)}</h2>
+          <div class="title-line"></div>
+          <div class="dot-matrix" aria-hidden="true">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="tech-nodes-list">
+          ${(section.items || []).map(item => `
+            <div class="tech-node-item">
+              <div class="tech-node-bullet"><span class="bullet-inner"></span></div>
+              <div class="tech-node-info">
+                <span class="tech-node-title">${escapeHtml(item.title)}</span>
+                <span class="tech-node-detail">${escapeHtml(item.detail)}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
   if (window.lucide) window.lucide.createIcons();
   populateSearchModal(data);
 }
@@ -578,6 +628,8 @@ function initStealthAdmin() {
     renderAdminProjectsList(data.projects || []);
     renderAdminSkillsList(data.skills || []);
     renderAdminCompetenciesList(data.competencies || []);
+    renderAdminSocialsList(data.socials || []);
+    renderAdminCustomSectionsList(data.customSections || []);
   }
 
   function updatePortraitPreview(data) {
@@ -848,6 +900,143 @@ function initStealthAdmin() {
       });
       renderAdminCompetenciesList(workingData.competencies);
       adminCompetenciesList.scrollTop = adminCompetenciesList.scrollHeight;
+    });
+  }
+
+  // Socials in Admin
+  const adminSocialsList = document.getElementById('adminSocialsList');
+  function renderAdminSocialsList(socials) {
+    if (!adminSocialsList) return;
+    
+    // Ensure all predefined socials exist in data
+    const predefinedSocials = DEFAULT_DATA.socials.map(s => s.id);
+    const missingSocials = DEFAULT_DATA.socials.filter(ds => !socials.find(s => s.id === ds.id));
+    if (missingSocials.length > 0) {
+      socials.push(...JSON.parse(JSON.stringify(missingSocials)));
+    }
+
+    adminSocialsList.innerHTML = socials.map((s, idx) => `
+      <div class="item-edit-card" data-index="${idx}">
+        <div class="form-grid-2">
+          <div class="form-group" style="display:flex; align-items:center; gap:0.5rem; justify-content:space-between;">
+            <label style="display:flex; align-items:center; gap:0.5rem; margin:0;"><i data-lucide="${s.icon}"></i> ${escapeHtml(s.platform)}</label>
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.8rem;">
+              <input type="checkbox" class="social-enable-cb" ${s.enabled ? 'checked' : ''}> Show
+            </label>
+          </div>
+          <div class="form-group">
+            <input type="url" class="social-url-input" value="${escapeHtml(s.url)}" placeholder="https://...">
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    if (window.lucide) window.lucide.createIcons();
+
+    adminSocialsList.querySelectorAll('.item-edit-card').forEach((card, idx) => {
+      const cb = card.querySelector('.social-enable-cb');
+      const urlInp = card.querySelector('.social-url-input');
+      cb.addEventListener('change', () => { workingData.socials[idx].enabled = cb.checked; });
+      urlInp.addEventListener('input', () => { workingData.socials[idx].url = urlInp.value; });
+    });
+  }
+
+  // Custom Sections in Admin
+  const adminCustomSectionsList = document.getElementById('adminCustomSectionsList');
+  const addCustomSectionBtn = document.getElementById('addCustomSectionBtn');
+  
+  function renderAdminCustomSectionsList(sections) {
+    if (!adminCustomSectionsList) return;
+    adminCustomSectionsList.innerHTML = sections.map((sec, sIdx) => `
+      <div class="item-edit-card" style="border-left:3px solid var(--accent-blue);" data-index="${sIdx}">
+        <div class="item-card-top">
+          <span class="item-badge-order">Section: ${escapeHtml(sec.title)}</span>
+          <button type="button" class="btn-icon-danger delete-section-btn" data-index="${sIdx}" title="Delete Section">
+            <i data-lucide="trash-2"></i>
+          </button>
+        </div>
+        <div class="form-group">
+          <label>Section Title</label>
+          <input type="text" class="section-title-input" value="${escapeHtml(sec.title)}" placeholder="e.g. AWARDS">
+        </div>
+        
+        <div class="section-items-container" style="margin-top:1rem; padding-left:1rem; border-left:1px dashed var(--border-line);">
+          <label>Section Items</label>
+          ${(sec.items || []).map((item, iIdx) => `
+            <div class="form-grid-2" style="margin-bottom:0.75rem; align-items:end;">
+              <div class="form-group" style="margin:0;">
+                <input type="text" class="item-title-input" data-sidx="${sIdx}" data-iidx="${iIdx}" value="${escapeHtml(item.title)}" placeholder="Item Title">
+              </div>
+              <div class="form-group" style="margin:0; display:flex; gap:0.5rem;">
+                <input type="text" class="item-detail-input" data-sidx="${sIdx}" data-iidx="${iIdx}" value="${escapeHtml(item.detail)}" placeholder="Item Detail">
+                <button type="button" class="btn-icon-danger delete-item-btn" data-sidx="${sIdx}" data-iidx="${iIdx}"><i data-lucide="x"></i></button>
+              </div>
+            </div>
+          `).join('')}
+          <button type="button" class="btn-secondary add-item-btn" data-sidx="${sIdx}" style="margin-top:0.5rem; font-size:0.75rem; padding:0.25rem 0.5rem;"><i data-lucide="plus" style="width:12px;height:12px;"></i> Add Item</button>
+        </div>
+      </div>
+    `).join('');
+
+    if (window.lucide) window.lucide.createIcons();
+
+    adminCustomSectionsList.querySelectorAll('.delete-section-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const sIdx = parseInt(e.currentTarget.getAttribute('data-index'), 10);
+        workingData.customSections.splice(sIdx, 1);
+        renderAdminCustomSectionsList(workingData.customSections);
+      });
+    });
+
+    adminCustomSectionsList.querySelectorAll('.section-title-input').forEach((inp, idx) => {
+      inp.addEventListener('input', () => { workingData.customSections[idx].title = inp.value; });
+    });
+
+    adminCustomSectionsList.querySelectorAll('.item-title-input').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        const sIdx = parseInt(e.target.getAttribute('data-sidx'), 10);
+        const iIdx = parseInt(e.target.getAttribute('data-iidx'), 10);
+        workingData.customSections[sIdx].items[iIdx].title = e.target.value;
+      });
+    });
+
+    adminCustomSectionsList.querySelectorAll('.item-detail-input').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        const sIdx = parseInt(e.target.getAttribute('data-sidx'), 10);
+        const iIdx = parseInt(e.target.getAttribute('data-iidx'), 10);
+        workingData.customSections[sIdx].items[iIdx].detail = e.target.value;
+      });
+    });
+
+    adminCustomSectionsList.querySelectorAll('.delete-item-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const sIdx = parseInt(e.currentTarget.getAttribute('data-sidx'), 10);
+        const iIdx = parseInt(e.currentTarget.getAttribute('data-iidx'), 10);
+        workingData.customSections[sIdx].items.splice(iIdx, 1);
+        renderAdminCustomSectionsList(workingData.customSections);
+      });
+    });
+
+    adminCustomSectionsList.querySelectorAll('.add-item-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const sIdx = parseInt(e.currentTarget.getAttribute('data-sidx'), 10);
+        workingData.customSections[sIdx].items = workingData.customSections[sIdx].items || [];
+        workingData.customSections[sIdx].items.push({ id: `cs-i-${Date.now()}`, title: 'New Item', detail: 'Item Detail' });
+        renderAdminCustomSectionsList(workingData.customSections);
+      });
+    });
+  }
+
+  if (addCustomSectionBtn) {
+    addCustomSectionBtn.addEventListener('click', () => {
+      workingData.customSections = workingData.customSections || [];
+      workingData.customSections.push({
+        id: `cs-${Date.now()}`,
+        title: 'NEW SECTION',
+        items: []
+      });
+      renderAdminCustomSectionsList(workingData.customSections);
+      adminCustomSectionsList.scrollTop = adminCustomSectionsList.scrollHeight;
     });
   }
 
