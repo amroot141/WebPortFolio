@@ -624,12 +624,19 @@ function initStealthAdmin() {
       inputFirebaseConfig.value = storedCfg ? JSON.stringify(storedCfg, null, 2) : '';
     }
 
+    // Ensure array fields exist
+    data.projects = data.projects || [];
+    data.skills = data.skills || [];
+    data.competencies = data.competencies || [];
+    data.socials = data.socials || [];
+    data.customSections = data.customSections || [];
+
     updatePortraitPreview(data);
-    renderAdminProjectsList(data.projects || []);
-    renderAdminSkillsList(data.skills || []);
-    renderAdminCompetenciesList(data.competencies || []);
-    renderAdminSocialsList(data.socials || []);
-    renderAdminCustomSectionsList(data.customSections || []);
+    renderAdminProjectsList(data.projects);
+    renderAdminSkillsList(data.skills);
+    renderAdminCompetenciesList(data.competencies);
+    renderAdminSocialsList(data.socials);
+    renderAdminCustomSectionsList(data.customSections);
   }
 
   function updatePortraitPreview(data) {
@@ -1065,6 +1072,104 @@ function initStealthAdmin() {
         const parsed = JSON.parse(val);
         setStoredFirebaseConfig(parsed);
       } catch (e) {}
+    }
+
+    // Explicitly gather Projects from DOM
+    const adminProjectsList = document.getElementById('adminProjectsList');
+    if (adminProjectsList) {
+      workingData.projects = [];
+      adminProjectsList.querySelectorAll('.item-edit-card').forEach(card => {
+        const titleInp = card.querySelector('.proj-title-input');
+        const subInp = card.querySelector('.proj-sub-input');
+        const tagInp = card.querySelector('.proj-tag-input');
+        workingData.projects.push({
+          id: `proj-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          title: titleInp ? titleInp.value : '',
+          subtitle: subInp ? subInp.value : '',
+          tag: tagInp ? tagInp.value : ''
+        });
+      });
+    }
+
+    // Explicitly gather Skills from DOM
+    const adminSkillsList = document.getElementById('adminSkillsList');
+    if (adminSkillsList) {
+      workingData.skills = [];
+      adminSkillsList.querySelectorAll('.item-edit-card').forEach(card => {
+        const titleInp = card.querySelector('.skill-title-input');
+        const detailInp = card.querySelector('.skill-detail-input');
+        workingData.skills.push({
+          id: `skill-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          title: titleInp ? titleInp.value : '',
+          detail: detailInp ? detailInp.value : ''
+        });
+      });
+    }
+
+    // Explicitly gather Competencies from DOM
+    const adminCompetenciesList = document.getElementById('adminCompetenciesList');
+    if (adminCompetenciesList) {
+      workingData.competencies = [];
+      adminCompetenciesList.querySelectorAll('.item-edit-card').forEach(card => {
+        const titleInp = card.querySelector('.comp-title-input');
+        const iconInp = card.querySelector('.comp-icon-input');
+        workingData.competencies.push({
+          id: `comp-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+          title: titleInp ? titleInp.value : '',
+          icon: (iconInp ? iconInp.value : 'tag') || 'tag'
+        });
+      });
+    }
+
+    // Explicitly gather Socials from DOM
+    const adminSocialsList = document.getElementById('adminSocialsList');
+    if (adminSocialsList) {
+      workingData.socials = [];
+      adminSocialsList.querySelectorAll('.item-edit-card').forEach(card => {
+        const cb = card.querySelector('.social-enable-cb');
+        const urlInp = card.querySelector('.social-url-input');
+        const label = card.querySelector('label');
+        if (label) {
+          const platform = label.textContent.trim();
+          const iconElem = label.querySelector('i');
+          const iconName = iconElem ? iconElem.getAttribute('data-lucide') : 'link';
+          workingData.socials.push({
+            id: `soc-${platform.toLowerCase().replace(/[^a-z0-9]/g, '')}`,
+            platform: platform,
+            url: urlInp ? urlInp.value.trim() : '',
+            enabled: cb ? cb.checked : false,
+            icon: iconName
+          });
+        }
+      });
+    }
+
+    // Explicitly gather Custom Sections from DOM
+    const adminCustomSectionsList = document.getElementById('adminCustomSectionsList');
+    if (adminCustomSectionsList) {
+      workingData.customSections = [];
+      adminCustomSectionsList.querySelectorAll('.item-edit-card').forEach(card => {
+        const titleInp = card.querySelector('.section-title-input');
+        if (titleInp) {
+          const sec = {
+            id: `cs-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+            title: titleInp.value,
+            items: []
+          };
+          card.querySelectorAll('.form-grid-2').forEach(itemGrid => {
+            const iTitle = itemGrid.querySelector('.item-title-input');
+            const iDetail = itemGrid.querySelector('.item-detail-input');
+            if (iTitle && iDetail) {
+              sec.items.push({
+                id: `cs-i-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+                title: iTitle.value,
+                detail: iDetail.value
+              });
+            }
+          });
+          workingData.customSections.push(sec);
+        }
+      });
     }
 
     return workingData;
