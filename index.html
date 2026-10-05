@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full-Stack Developer Portfolio | OS Bento Resume</title>
+  <meta name="description" content="Futuristic OS window & bento-card portfolio for a Full-Stack Developer & System Architect.">
+  
+  <!-- Google Fonts: Space Grotesk & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Firebase Web SDK (Modular CDN) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    window.FirebaseApp = { initializeApp, getFirestore, doc, getDoc, setDoc };
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="os-background-glow"></div>
+
+  <!-- Main OS Window Wrapper (Clean Client View) -->
+  <main class="os-wrapper">
+    <div class="os-window-frame" id="osWindow">
+      
+      <!-- Top OS Window Bar -->
+      <header class="os-titlebar">
+        <div class="os-title-left">
+          <!-- Secret trigger: Triple click this indicator dot to trigger admin login -->
+          <span class="os-indicator-dot" id="secretAdminTrigger" title="System Status: Triple-click for Admin"></span>
+          <span class="os-title-text" id="viewTitleText">RESUME <span class="divider">|</span> <span id="viewYearText">2026</span></span>
+        </div>
+        <div class="os-title-actions">
+          <div class="os-controls-pill" aria-label="Window Controls">
+            <button class="os-dot dot-minimize" title="Minimize" aria-label="Minimize"></button>
+            <button class="os-dot dot-maximize" title="Maximize" aria-label="Maximize"></button>
+            <button class="os-dot dot-close" title="Close" aria-label="Close"></button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Bento Grid Inner Canvas -->
+      <div class="bento-canvas">
+        
+        <!-- SECTION 1: HERO BENTO CARD (TOP) -->
+        <section class="bento-card hero-card" id="heroCard">
+          <!-- Left Column: High-Contrast Grayscale Portrait -->
+          <div class="hero-portrait-container" id="portraitContainer">
+            <div class="portrait-overlay"></div>
+            <!-- Dynamic Portrait (Image or SVG default) -->
+            <div class="portrait-image-wrapper" id="portraitImageWrapper">
+              <!-- Rendered via JS -->
+            </div>
+            <div class="portrait-badge">
+              <span class="live-pulse"></span>
+              <span id="viewSystemStatus">SYSTEM ONLINE</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Info, Header & Bio -->
+          <div class="hero-info-column">
+            
+            <!-- Top Row: Role Badge & Search Pill -->
+            <div class="hero-top-row">
+              <div class="role-pill">
+                <span class="role-text" id="viewRole">FULL-STACK DEVELOPER</span>
+              </div>
+              <button class="search-pill-btn" id="searchBtn" title="Search profile & stack (Ctrl+K)" aria-label="Search">
+                <i data-lucide="search"></i>
+              </button>
+            </div>
+
+            <!-- Middle Row: Name & Bio -->
+            <div class="hero-middle-row">
+              <h1 class="hero-name" id="heroName">
+                <span class="name-text" id="viewName">MANOJ KUMAR R</span>
+                <span class="name-cursor">_</span>
+              </h1>
+              <p class="hero-bio" id="viewBio">
+                Passionate Full-Stack Developer & System Architect with expertise in building high-performance web applications, automated workflows, and robust database architectures. Skilled in solving complex technical challenges and optimizing end-to-end digital systems.
+              </p>
+            </div>
+
+            <!-- Bottom Row: Contact Email Pill -->
+            <div class="hero-bottom-row">
+              <a href="#" class="contact-email-pill" id="emailPill" title="Click to copy email">
+                <div class="pill-icon-box">
+                  <i data-lucide="globe"></i>
+                </div>
+                <span class="email-text" id="viewEmail">manojkumarrbca@srmasc.ac.in</span>
+                <span class="pill-action-icon">
+                  <i data-lucide="copy" class="copy-icon"></i>
+                  <i data-lucide="check" class="check-icon"></i>
+                </span>
+                <span class="copied-tooltip" id="copiedTooltip">Copied to clipboard!</span>
+              </a>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SECTION 2: MAIN CONTENT BENTO CARD (BOTTOM) -->
+        <section class="bento-card main-content-card" id="mainContentCard">
+          
+          <!-- Top 2-Column Split: Education/Highlights & Technical Skills -->
+          <div class="main-two-col-grid">
+            
+            <!-- Left Column: Experience & Education Timeline -->
+            <div class="content-col experience-col">
+              <div class="section-title-wrapper">
+                <h2 class="section-title">EXPERIENCE & EDUCATION</h2>
+                <div class="title-line"></div>
+                <div class="dot-matrix" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+
+              <div class="timeline-list" id="experienceTimelineList">
+                <!-- Injected dynamically via JS -->
+              </div>
+            </div>
+
+            <!-- Right Column: Technical Skills -->
+            <div class="content-col skills-col">
+              <div class="section-title-wrapper">
+                <h2 class="section-title">TECHNICAL SKILLS</h2>
+                <div class="title-line"></div>
+                <div class="dot-matrix" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+
+              <div class="tech-nodes-list" id="technicalSkillsList">
+                <!-- Injected dynamically via JS -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Middle Row: Work & Automation -->
+          <div class="content-row work-automation-row">
+            <div class="section-title-wrapper">
+              <h2 class="section-title">WORK & AUTOMATION</h2>
+              <div class="title-line"></div>
+              <div class="dot-matrix" aria-hidden="true">
+                <span></span><span></span><span></span>
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+            
+            <div class="work-summary-box">
+              <p class="work-summary-text" id="viewWorkSummary">
+                Specialize in building custom web platforms, process automation engines, and system integrations for clients and businesses to optimize workflow efficiency.
+              </p>
+              <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span id="viewAvailability">Available for New Projects & Architectural Consultations</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Row: Core Competencies / Soft Skills -->
+          <div class="content-row competencies-row">
+            <div class="section-title-wrapper">
+              <h2 class="section-title">CORE COMPETENCIES</h2>
+              <div class="title-line"></div>
+              <div class="dot-matrix" aria-hidden="true">
+                <span></span><span></span><span></span>
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <div class="competencies-pills-wrap" id="competenciesList">
+              <!-- Injected dynamically via JS -->
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- OS Footer Status Bar -->
+      <footer class="os-footer-bar">
+        <div class="footer-status-left">
+          <span class="code-bracket">&lt;/&gt;</span>
+          <span id="cloudStatusBadge" class="cloud-status-badge">
+            <span class="cloud-dot"></span>
+            <span id="cloudStatusText">INITIALIZING</span>
+          </span>
+          <span class="footer-separator">•</span>
+          <span class="footer-time" id="systemClock">00:00:00 UTC</span>
+        </div>
+        <div class="footer-status-right">
+          <span>DARK OS v2.6</span>
+          <span class="footer-separator">•</span>
+          <span class="status-ok">100% HEALTH</span>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       SECRET PASSWORD / PIN AUTHENTICATION MODAL (HIDDEN FROM VISITORS)
+       ========================================================================= -->
+  <dialog class="auth-modal" id="authModal">
+    <div class="auth-card">
+      <div class="auth-icon-wrap">
+        <i data-lucide="shield-alert"></i>
+      </div>
+      <div class="auth-header">
+        <h3>OWNER AUTHENTICATION</h3>
+        <p>Enter your master security PIN to access portfolio management</p>
+      </div>
+      <form id="authForm" class="auth-form">
+        <div class="auth-input-group">
+          <input type="password" id="authPinInput" placeholder="Enter PIN (Default: 2026)" autocomplete="off" autofocus>
+          <button type="submit" class="auth-submit-btn" id="authSubmitBtn">
+            <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+        <p class="auth-error-msg" id="authErrorMsg">Invalid Security PIN</p>
+        <div class="auth-actions">
+          <button type="button" class="btn-text" id="authCancelBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- =========================================================================
+       STEALTH ADMIN MANAGEMENT DASHBOARD MODAL
+       ========================================================================= -->
+  <dialog class="admin-dashboard-modal" id="adminModal">
+    <div class="admin-panel-container">
+      
+      <!-- Dashboard Header -->
+      <div class="admin-header">
+        <div class="admin-header-title">
+          <div class="admin-logo-icon">
+            <i data-lucide="cloud-lightning"></i>
+          </div>
+          <div>
+            <h3>PORTFOLIO CONTROL CENTER</h3>
+            <p id="adminHeaderSubtitle">Firebase Cloud Sync Enabled • Instant Global Updates</p>
+          </div>
+        </div>
+        <div class="admin-header-actions">
+          <button class="btn-secondary" id="resetDefaultsBtn" title="Reset all fields to original defaults">
+            <i data-lucide="rotate-ccw"></i>
+            <span>Reset</span>
+          </button>
+          <button class="btn-primary" id="saveChangesBtn">
+            <i data-lucide="save"></i>
+            <span>Save & Sync Globally</span>
+          </button>
+          <button class="modal-close-icon-btn" id="closeAdminBtn" aria-label="Close dashboard">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dashboard Navigation Tabs -->
+      <div class="admin-tabs-nav">
+        <button class="tab-btn active" data-tab="tab-profile">
+          <i data-lucide="user"></i>
+          <span>Profile & Bio</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-portrait">
+          <i data-lucide="image"></i>
+          <span>Photo / Avatar</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-projects">
+          <i data-lucide="briefcase"></i>
+          <span>Projects & Education</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-skills">
+          <i data-lucide="code"></i>
+          <span>Technical Skills</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-work">
+          <i data-lucide="layers"></i>
+          <span>Work & Automation</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-competencies">
+          <i data-lucide="tag"></i>
+          <span>Competencies</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-cloud">
+          <i data-lucide="cloud"></i>
+          <span>Firebase Cloud Sync</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-security">
+          <i data-lucide="lock"></i>
+          <span>Security PIN</span>
+        </button>
+      </div>
+
+      <!-- Dashboard Tab Panels Container -->
+      <div class="admin-tab-content-wrap">
+        
+        <!-- TAB 1: Profile & Bio -->
+        <div class="tab-pane active" id="tab-profile">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="inputName">Full Name</label>
+              <input type="text" id="inputName" placeholder="e.g. MANOJ KUMAR R">
+            </div>
+            <div class="form-group">
+              <label for="inputRole">Role / Title</label>
+              <input type="text" id="inputRole" placeholder="e.g. FULL-STACK DEVELOPER">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="inputEmail">Contact Email / URL</label>
+              <input type="text" id="inputEmail" placeholder="e.g. user@domain.com">
+            </div>
+            <div class="form-group">
+              <label for="inputYear">Year Label</label>
+              <input type="text" id="inputYear" placeholder="e.g. 2026">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputBio">Biography Summary</label>
+            <textarea id="inputBio" rows="4" placeholder="Enter your full professional summary and developer bio..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="inputSystemStatus">Badge Status Text</label>
+            <input type="text" id="inputSystemStatus" placeholder="e.g. SYSTEM ONLINE">
+          </div>
+        </div>
+
+        <!-- TAB 2: Photo / Portrait Upload -->
+        <div class="tab-pane" id="tab-portrait">
+          <div class="portrait-editor-layout">
+            <div class="portrait-preview-box">
+              <div class="portrait-preview-frame" id="adminPortraitPreview">
+                <!-- Preview rendered here -->
+              </div>
+              <span class="preview-caption">Live Card Preview</span>
+            </div>
+
+            <div class="portrait-controls">
+              <div class="form-group">
+                <label>Upload Photo from Device (Auto-syncs to Cloud)</label>
+                <div class="file-dropzone" id="fileDropzone">
+                  <i data-lucide="upload-cloud"></i>
+                  <p><strong>Click to browse</strong> or drag and drop image</p>
+                  <span>Auto compressed & synced to cloud</span>
+                  <input type="file" id="portraitFileInput" accept="image/*">
+                </div>
+              </div>
+
+              <div class="form-divider"><span>OR</span></div>
+
+              <div class="form-group">
+                <label for="inputPortraitUrl">Image URL</label>
+                <input type="url" id="inputPortraitUrl" placeholder="https://example.com/your-photo.jpg">
+              </div>
+
+              <div class="portrait-action-btns">
+                <button type="button" class="btn-secondary" id="useDefaultAvatarBtn">
+                  <i data-lucide="user-check"></i>
+                  <span>Use Default Tech SVG Avatar</span>
+                </button>
+                <button type="button" class="btn-danger-outline" id="removePhotoBtn">
+                  <i data-lucide="trash-2"></i>
+                  <span>Remove Custom Photo</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: Projects & Education Timeline -->
+        <div class="tab-pane" id="tab-projects">
+          <div class="pane-header-action">
+            <div>
+              <h4>Experience & Projects List</h4>
+              <p>Add, edit or remove items in the vertical timeline.</p>
+            </div>
+            <button class="btn-primary" id="addProjectBtn">
+              <i data-lucide="plus"></i>
+              <span>Add Item</span>
+            </button>
+          </div>
+
+          <div class="items-list-container" id="adminProjectsList">
+            <!-- Dynamic project edit cards injected here -->
+          </div>
+        </div>
+
+        <!-- TAB 4: Technical Skills -->
+        <div class="tab-pane" id="tab-skills">
+          <div class="pane-header-action">
+            <div>
+              <h4>Technical Skills Nodes</h4>
+              <p>Add your programming languages, frameworks, databases, and architectures.</p>
+            </div>
+            <button class="btn-primary" id="addSkillBtn">
+              <i data-lucide="plus"></i>
+              <span>Add Skill Node</span>
+            </button>
+          </div>
+
+          <div class="items-list-container" id="adminSkillsList">
+            <!-- Dynamic skill items injected here -->
+          </div>
+        </div>
+
+        <!-- TAB 5: Work & Automation -->
+        <div class="tab-pane" id="tab-work">
+          <div class="form-group">
+            <label for="inputWorkSummary">Work & Automation Summary</label>
+            <textarea id="inputWorkSummary" rows="4" placeholder="Describe your freelance and automation capabilities..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="inputAvailability">Availability / Status Text</label>
+            <input type="text" id="inputAvailability" placeholder="e.g. Available for New Projects & Architectural Consultations">
+          </div>
+        </div>
+
+        <!-- TAB 6: Core Competencies -->
+        <div class="tab-pane" id="tab-competencies">
+          <div class="pane-header-action">
+            <div>
+              <h4>Core Competency Badges</h4>
+              <p>Manage the pill badges displayed at the bottom of the resume.</p>
+            </div>
+            <button class="btn-primary" id="addCompetencyBtn">
+              <i data-lucide="plus"></i>
+              <span>Add Competency</span>
+            </button>
+          </div>
+
+          <div class="items-list-container" id="adminCompetenciesList">
+            <!-- Dynamic competency badges injected here -->
+          </div>
+        </div>
+
+        <!-- TAB 7: Firebase Cloud Sync Configuration -->
+        <div class="tab-pane" id="tab-cloud">
+          <div class="cloud-config-box">
+            <div class="cloud-status-card" id="cloudStatusCard">
+              <div class="cloud-card-left">
+                <i data-lucide="database" class="cloud-icon"></i>
+                <div>
+                  <h4 id="cloudConnectionTitle">Firebase Cloud Sync: Offline / Local Mode</h4>
+                  <p id="cloudConnectionSubtitle">Connect your free Firebase Firestore database to enable real-time 1-second global updates.</p>
+                </div>
+              </div>
+              <button type="button" class="btn-secondary" id="testCloudConnectionBtn">
+                <i data-lucide="refresh-cw"></i>
+                <span>Test Connection</span>
+              </button>
+            </div>
+
+            <div class="form-group">
+              <label for="inputFirebaseConfig">Firebase Configuration (JSON / Object)</label>
+              <textarea id="inputFirebaseConfig" rows="6" placeholder='Paste your Firebase config here e.g.:
+{
+  "apiKey": "AIzaSy...",
+  "authDomain": "your-app.firebaseapp.com",
+  "projectId": "your-app",
+  "storageBucket": "your-app.appspot.com",
+  "messagingSenderId": "...",
+  "appId": "..."
+}'></textarea>
+              <span class="field-hint">Your config is safely stored and connects directly from client to Firestore over SSL.</span>
+            </div>
+
+            <div class="firebase-quick-guide">
+              <h5>⚡ How to get your free Firebase Config in 60 seconds:</h5>
+              <ol>
+                <li>Go to <a href="https://console.firebase.google.com" target="_blank" rel="noopener">console.firebase.google.com</a> & click <strong>Create a project</strong>.</li>
+                <li>Go to <strong>Build &gt; Firestore Database &gt; Create Database</strong> (Start in <em>Test Mode</em> for read/write access).</li>
+                <li>Go to <strong>Project Settings (Gear icon) &gt; General &gt; Your Apps &gt; Add Web App (<code>&lt;/&gt;</code>)</strong>.</li>
+                <li>Copy the <code>firebaseConfig</code> object and paste it above!</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 8: Security PIN -->
+        <div class="tab-pane" id="tab-security">
+          <div class="form-group">
+            <label for="inputNewPin">Change Admin Access PIN</label>
+            <input type="password" id="inputNewPin" placeholder="Enter new numeric or text PIN">
+            <span class="field-hint">This PIN is required whenever accessing this dashboard. (Default: <code>2026</code>)</span>
+          </div>
+          <div class="secret-triggers-info">
+            <h5>How to Access Dashboard on any Deployed URL:</h5>
+            <ul>
+              <li><strong>Secret Keyboard Shortcut:</strong> Press <code>Ctrl + Shift + A</code> (or <code>Cmd + Shift + A</code>)</li>
+              <li><strong>Hidden Indicator Dot:</strong> Triple-click the top-left white glowing indicator dot in the titlebar</li>
+              <li><strong>Secret URL parameter:</strong> Add <code>?admin=1</code> or <code>#admin</code> to the URL</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Dashboard Footer -->
+      <div class="admin-footer">
+        <span class="auto-save-hint"><i data-lucide="shield-check"></i> Changes are protected and synced in real-time.</span>
+        <div class="admin-footer-buttons">
+          <button class="btn-secondary" id="cancelAdminBtn">Exit Admin</button>
+          <button class="btn-primary" id="saveAndCloseBtn">Save & Sync Globally</button>
+        </div>
+      </div>
+
+    </div>
+  </dialog>
+
+  <!-- Interactive Quick Command / Search Modal -->
+  <dialog class="command-modal" id="commandModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-search-input-wrap">
+          <i data-lucide="terminal"></i>
+          <input type="text" id="commandInput" placeholder="Filter skills, architecture, stack..." autocomplete="off">
+        </div>
+        <button class="modal-close-btn" id="closeModalBtn" aria-label="Close search">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-results" id="modalResults">
+        <!-- Filterable search items injected via JS -->
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Toast Notification -->
+  <div class="os-toast" id="osToast">
+    <i data-lucide="check-circle" class="toast-icon"></i>
+    <span class="toast-msg" id="toastMsg">Changes applied successfully</span>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
