@@ -29,25 +29,29 @@ const DEFAULT_DATA = {
       id: 'proj-1',
       title: 'Full-Stack Billing Application',
       subtitle: 'Custom Operations & Management Tool',
-      tag: 'Production Ready • Scalable Backend'
+      tag: 'Production Ready • Scalable Backend',
+      url: ''
     },
     {
       id: 'proj-2',
       title: 'IoT Tourist Safety Prototype',
       subtitle: 'Real-time System & Hardware Architecture',
-      tag: 'ESP32 / Telemetry • Live Tracking'
+      tag: 'ESP32 / Telemetry • Live Tracking',
+      url: ''
     },
     {
       id: 'proj-3',
       title: 'College Schedule Manager',
       subtitle: 'Full-Stack Web App',
-      tag: 'Automated Conflict Resolution'
+      tag: 'Automated Conflict Resolution',
+      url: ''
     },
     {
       id: 'proj-4',
       title: 'Computer Engineering Degree',
       subtitle: 'Core Software & Systems Foundation',
-      tag: 'Data Structures & Distributed Systems'
+      tag: 'Data Structures & Distributed Systems',
+      url: ''
     }
   ],
   skills: [
@@ -150,6 +154,11 @@ function loadLocalData() {
           if (!s.icon || s.icon === 'link' || s.icon === 'null') {
             s.icon = s.platform.toLowerCase().replace(/[^a-z0-9]/g, '');
           }
+        });
+      }
+      if (currentData.projects) {
+        currentData.projects.forEach(p => {
+          if (typeof p.url !== 'string') p.url = '';
         });
       }
     } else {
@@ -336,19 +345,27 @@ function renderPortfolio(data) {
   // Experience & Education Timeline
   const expList = document.getElementById('experienceTimelineList');
   if (expList) {
-    expList.innerHTML = (data.projects || []).map(p => `
-      <div class="timeline-item" data-id="${p.id}">
-        <div class="timeline-node">
-          <span class="node-ring"></span>
-          <span class="node-core"></span>
+    expList.innerHTML = (data.projects || []).map(p => {
+      const linkBtn = p.url ? `<a href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer" class="timeline-link-btn" title="View Project">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>` : '';
+      return `
+        <div class="timeline-item" data-id="${p.id}">
+          <div class="timeline-node">
+            <span class="node-ring"></span>
+            <span class="node-core"></span>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-heading-row">
+              <h3 class="timeline-heading">${escapeHtml(p.title)}</h3>
+              ${linkBtn}
+            </div>
+            <p class="timeline-sub">${escapeHtml(p.subtitle)}</p>
+            ${p.tag ? `<span class="timeline-tag">${escapeHtml(p.tag)}</span>` : ''}
+          </div>
         </div>
-        <div class="timeline-content">
-          <h3 class="timeline-heading">${escapeHtml(p.title)}</h3>
-          <p class="timeline-sub">${escapeHtml(p.subtitle)}</p>
-          ${p.tag ? `<span class="timeline-tag">${escapeHtml(p.tag)}</span>` : ''}
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   // Technical Skills Nodes
@@ -789,6 +806,10 @@ function initStealthAdmin() {
             <input type="text" class="proj-tag-input" value="${escapeHtml(p.tag || '')}" placeholder="Tag">
           </div>
         </div>
+        <div class="form-group">
+          <label>Project Link (URL)</label>
+          <input type="url" class="proj-url-input" value="${escapeHtml(p.url || '')}" placeholder="https://github.com/...">
+        </div>
       </div>
     `).join('');
 
@@ -806,10 +827,12 @@ function initStealthAdmin() {
       const titleInp = card.querySelector('.proj-title-input');
       const subInp = card.querySelector('.proj-sub-input');
       const tagInp = card.querySelector('.proj-tag-input');
+      const urlInp = card.querySelector('.proj-url-input');
 
       titleInp.addEventListener('input', () => { workingData.projects[idx].title = titleInp.value; });
       subInp.addEventListener('input', () => { workingData.projects[idx].subtitle = subInp.value; });
       tagInp.addEventListener('input', () => { workingData.projects[idx].tag = tagInp.value; });
+      urlInp.addEventListener('input', () => { workingData.projects[idx].url = urlInp.value; });
     });
   }
 
@@ -819,7 +842,8 @@ function initStealthAdmin() {
         id: `proj-${Date.now()}`,
         title: 'New Project Title',
         subtitle: 'Architecture & Tech Stack',
-        tag: 'Active Project'
+        tag: 'Active Project',
+        url: ''
       });
       renderAdminProjectsList(workingData.projects);
       adminProjectsList.scrollTop = adminProjectsList.scrollHeight;
@@ -1114,11 +1138,13 @@ function initStealthAdmin() {
         const titleInp = card.querySelector('.proj-title-input');
         const subInp = card.querySelector('.proj-sub-input');
         const tagInp = card.querySelector('.proj-tag-input');
+        const urlInp = card.querySelector('.proj-url-input');
         workingData.projects.push({
           id: `proj-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
           title: titleInp ? titleInp.value : '',
           subtitle: subInp ? subInp.value : '',
-          tag: tagInp ? tagInp.value : ''
+          tag: tagInp ? tagInp.value : '',
+          url: urlInp ? urlInp.value.trim() : ''
         });
       });
     }
